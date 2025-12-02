@@ -241,6 +241,11 @@ export class GestionSolicitudesPage {
     }
   }
 
+  // Verifica si una solicitud ya tiene una cita programada
+    tieneCita(solicitud: any): boolean {
+    return solicitud.cita != null; // Si existe cita, retorna true
+  }
+
   // Navega al panel principal de administrador
     volverAlPanel() {
       this.router.navigate(['/panel-admin']);

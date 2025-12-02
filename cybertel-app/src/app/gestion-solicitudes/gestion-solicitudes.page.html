@@ -55,8 +55,10 @@
       </p>
 
       <!-- BOTON QUE APRE POPUP -->
-      <ion-button expand="block" (click)="abrirPopup(s)">
-        Agendar Cita
+      <ion-button 
+          *ngIf="!tieneCita(s)" 
+          (click)="abrirPopup(s)">
+          Agendar Cita
       </ion-button>
     </div>
 
