@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 // Router permite la navegación entre páginas
 import { Router } from '@angular/router';
 
+import { ViewWillEnter } from '@ionic/angular';
+
 // Importamos componentes de Ionic de manera standalone
 import {
   IonButton, IonCard, IonCardHeader, IonCardTitle,
@@ -23,9 +25,9 @@ import { Firestore, collection, getDocs } from '@angular/fire/firestore';
     IonContent, IonHeader, IonToolbar, IonTitle,
     IonButton, IonCard, IonCardHeader, IonCardTitle,
     IonCardSubtitle, IonCardContent, CommonModule
-  ]
-})
-  export class CatalogoPage {
+    ]
+  })
+  export class CatalogoPage implements ViewWillEnter {
 
   // Array donde se guardarán los productos obtenidos de Firebase
   productos: any[] = []; 
@@ -50,9 +52,13 @@ import { Firestore, collection, getDocs } from '@angular/fire/firestore';
     }));
   }
 
-  /**
-   * Agrega un producto al carrito guardado en localStorage.
-   */
+  // Se actualiza el controlador del Carrito
+  ionViewWillEnter() {
+    const carrito = JSON.parse(localStorage.getItem('carritoProductos') || '[]');
+    this.contadorCarrito = carrito.length; // Actualiza la cantidad real
+  }
+
+    // Agrega un producto al carrito guardado en localStorage
     agregarAlCarrito(producto: any) {
 
     // Si el carrito no existe, se crea vacío
@@ -64,8 +70,13 @@ import { Firestore, collection, getDocs } from '@angular/fire/firestore';
     // Se guarda el carrito actualizado
     localStorage.setItem('carritoProductos', JSON.stringify(carrito));
 
+    // Actualizar contador
+    this.contadorCarrito = carrito.length;
+
     alert('Producto agregado al carrito.');
   }
+
+  contadorCarrito: number = 0;
 
   // Redirige al usuario a la página de solicitud de producto (carrito)
   irAlCarrito() {
